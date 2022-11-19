@@ -1,5 +1,5 @@
 /**
- * cipher()
+ * cipher() - Alphabet assigned in an Array
  * ------------------------------------------
  * To Encrypt or Decrypt a message by shifting Alphabetic order (based on Caesar Cipher plus more features).
  * A function that takes 2 parameters:
