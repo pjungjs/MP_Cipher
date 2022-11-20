@@ -38,7 +38,7 @@ function cipher(msg, num) {
             if (!alpLow.includes(lower[i])) {
                 secretMsg += lower[i];
             } else { //if there's a matching character in the Alphabet array,
-                //assign to the variable "newIndex" the index of each letter of the @msg in Alphabet array.
+                //find the index number in "alpLow" the letter from "lower" and add the "num", then assign it to the "newIndex"
                 let newIndex = alpLow.indexOf(lower[i]) + num;
 
                 //if "newIndex" is a positive number
@@ -48,22 +48,24 @@ function cipher(msg, num) {
                         //reassign the value that it fits in the Alphabet array by subtracting with the length of the Alphabet array.
                         newIndex -= alpLow.length;
                     }
-                } else if (newIndex < 0) { //if "newIndex" is a negative number
-                    newIndex = alpLow.length + newIndex;
-                    
+                } else if (newIndex < 0) { //if "newIndex" is a negative number                    
                     //a loop to check if the shifted letter index cannot be found in the Alphabet array,
                     while (alpLow[newIndex] === undefined) {
                         //keep subtracting until it reaches a index number that can be found in the Alphabet array.
                         newIndex = alpLow.length + newIndex;
                     }
                 }
-
-                //add the letters that has shifted according to the @num provided.
-                secretMsg += alpLow[newIndex];
+                //check first if the character is UPPER or lower case from the original "msg",
+                //then assign the UPPER or lower case accordindly.
+                if (msg[i] === msg[i].toUpperCase()) {
+                    secretMsg += alpCap[newIndex];
+                } else if (msg[i] === msg[i].toLowerCase()) {
+                    secretMsg += alpLow[newIndex];
+                }
             }
         }
     }
-    console.log(secretMsg)
+    console.log(secretMsg);
 }
 
 // *Testing the error messages
@@ -76,18 +78,22 @@ cipher("any", "z"); //> You must insert a proper number!
 cipher("hello", 0); //> hello
 cipher("hello", 1); //> ifmmp
 //since Alphabet has 26 letters, if I shift 26 letters or multiple of it, it will come back to the same letter:
-cipher("hello", 26); //> hello
+cipher("hi", 26); //> hi
 cipher("hello", 78); //> hello
 //same goes to the negative numbers:
-cipher("hello", -52); //> hello
-cipher("hello", -104); //> hello
+cipher("bye", -52); //> bye
+cipher("goodbye", -104); //> goodbye
 
 // *Testing a simple sentence with non-existent characters
-cipher("Hello, my name is Jinseok!", 2); //> jgnnq, oa pcog ku lkpugqm!
+cipher("Hello, my name is Jinseok!", 2); //> Jgnnq, oa pcog ku Lkpugqm!
 // *Testing with number beyond the length of Alphabet array
 cipher("zizzi’s zippy zipper zips.", 54); //> bkbbk’u bkrra bkrrgt bkru.
-// *Testing with a negative number.
-cipher("Can an active actor always actually act accurately?", -30); //> ywj wj wypera wypkn whswuo wypqwhhu wyp wyyqnwpahu?
-// *Testing absurd numbers
-cipher("Peter Piper picked a peck of pickled peppers", 500); //> vkzkx vovkx voiqkj g vkiq ul voiqrkj vkvvkxy
-cipher("vkzkx vovkx voiqkj g vkiq ul voiqrkj vkvvkxy", -500); //> peter piper picked a peck of pickled peppers
+// *Testing with a negative number
+cipher("Can an active actor always actually act accurately?", -30); //> Ywj wj wypera wypkn whswuo wypqwhhu wyp wyyqnwpahu?
+// *Testing with absurd numbers
+cipher("Peter Piper picked a peck of pickled peppers", 500); //> Vkzkx Vovkx voiqkj g vkiq ul voiqrkj vkvvkxy
+cipher("Vkzkx Vovkx voiqkj g vkiq ul voiqrkj vkvvkxy", -500); //> Peter Piper picked a peck of pickled peppers
+
+// *Testing if matches the letter cases (UPPER or lower case)
+cipher("ShE sElLs SeAsHeLlS bY tHe SeAsHoRe", 5); // XmJ xJqQx XjFxMjQqX gD yMj XjFxMtWj
+cipher("xMj XjQqX xJfXmJqQx Gd YmJ xJfXmTwJ", -5); // sHe SeLlS sEaShElLs By ThE sEaShOrE
